@@ -1,0 +1,1152 @@
+{
+  "description": "Payment checks (SPEC.md §22, Payment check): the status of `invoice`, which has no address (expiresAt = date + expiry; `received` is \"0\", `rest` null) from the LUD-21 answer to its verify URL, at `now`, or the error. The grace period ends at expiresAt + 120. `bodyText`: the body as sent, when it is not a JSON value written as such: one leading byte order mark is ignored (SPEC.md §15); JSON as SPEC.md §2 reads it (of two members with one name, the last counts; a number of any length is a double; a name may hold U+0000; no more than 64 arrays and objects nested; nothing else is JSON). `stored`: invoices as a shop stores them, checked before a payment check asks anything (SPEC.md §22): valid, or the error.",
+  "invoice": {
+    "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+    "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+    "verifyUrl": "https://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+    "expiresAt": 1791379179
+  },
+  "cases": [
+    {
+      "name": "paid",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "body": {
+          "status": "OK",
+          "settled": true,
+          "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245",
+          "pr": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv"
+        }
+      },
+      "expected": {
+        "state": "paid",
+        "method": "lightning",
+        "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245"
+      }
+    },
+    {
+      "name": "paid, the invoice in upper case",
+      "now": 1791379299,
+      "http": {
+        "status": 200,
+        "body": {
+          "status": "OK",
+          "settled": true,
+          "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245",
+          "pr": "LNBC210N1P4VVSMGPP5MPEPFJVQFTECC5JG50T6J7PA929SPKV30ZWX04XJ9JQL8QHH9QUSSP5R7D725TW2VF7345MTMUUYPCSAV4SH2QP6663QXS2AL3Q8855QWXQXQZURNP4QVYNDEAQZMAN7H898JXM98DZKM0MLRSX36S93SMRUR7H0AZYYUXC5RZJQWGHF7ZXVFKXQ5A6SR65G0GDKV768P83MHSNT0MSSZAPAMZX2QVUXQQQQRT49LMTCQQQQQQQQQQQ86QQ9QCQZPUHP5GS8L6CK7JDSA9QX8U2YDGL6Q933MN2047J5NW9F9XEKNLE3UJLTQ9QYYSSQSJVK6T43CMGNCDN8Z783R2GYM2U80DH5XA2XMW2U0A9AYKHWW3Z9TDJ4M5KVXT6YME90C0G0GAUF008HR70LX5JDKZFZN7HWA73AXXSQY9RCWV"
+        }
+      },
+      "expected": {
+        "state": "paid",
+        "method": "lightning",
+        "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245"
+      }
+    },
+    {
+      "name": "paid, the preimage in upper case",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "body": {
+          "status": "OK",
+          "settled": true,
+          "preimage": "F71FD193F4B67CE4841F0ABEB22A55E298559DC0D922E9FBB1A58128D1B44245",
+          "pr": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv"
+        }
+      },
+      "expected": {
+        "state": "paid",
+        "method": "lightning",
+        "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245"
+      }
+    },
+    {
+      "name": "paid without status OK",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "body": {
+          "settled": true,
+          "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245",
+          "pr": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv"
+        }
+      },
+      "expected": {
+        "state": "paid",
+        "method": "lightning",
+        "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245"
+      }
+    },
+    {
+      "name": "paid, the body after a byte order mark (one, ignored)",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "bodyText": "﻿{\"status\":\"OK\",\"settled\":true,\"preimage\":\"f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245\",\"pr\":\"lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv\"}"
+      },
+      "expected": {
+        "state": "paid",
+        "method": "lightning",
+        "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245"
+      }
+    },
+    {
+      "name": "two byte order marks: not JSON",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "bodyText": "﻿﻿{\"status\":\"OK\",\"settled\":true,\"preimage\":\"f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245\",\"pr\":\"lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv\"}"
+      },
+      "expected": {
+        "error": "network"
+      }
+    },
+    {
+      "name": "a name twice: the last counts",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "bodyText": "{\"status\":\"OK\",\"settled\":false,\"preimage\":null,\"settled\":true,\"preimage\":\"f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245\",\"pr\":\"lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv\"}"
+      },
+      "expected": {
+        "state": "paid",
+        "method": "lightning",
+        "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245"
+      }
+    },
+    {
+      "name": "a name twice, the last not settled: not paid",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "bodyText": "{\"status\":\"OK\",\"settled\":true,\"preimage\":\"f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245\",\"pr\":\"lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv\",\"settled\":false}"
+      },
+      "expected": {
+        "state": "open",
+        "expiresAt": 1791379179,
+        "received": "0",
+        "rest": null
+      }
+    },
+    {
+      "name": "a name in another case is another name: Settled is not settled",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "bodyText": "{\"status\":\"OK\",\"Settled\":true,\"preimage\":\"f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245\",\"pr\":\"lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv\"}"
+      },
+      "expected": {
+        "state": "open",
+        "expiresAt": 1791379179,
+        "received": "0",
+        "rest": null
+      }
+    },
+    {
+      "name": "a member of 5000 digits: a number, still JSON",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "bodyText": "{\"status\":\"OK\",\"settled\":true,\"preimage\":\"f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245\",\"pr\":\"lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv\",\"extra\":99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999}"
+      },
+      "expected": {
+        "state": "paid",
+        "method": "lightning",
+        "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245"
+      }
+    },
+    {
+      "name": "a member 1e400: a number, still JSON",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "bodyText": "{\"status\":\"OK\",\"settled\":true,\"preimage\":\"f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245\",\"pr\":\"lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv\",\"extra\":1e400}"
+      },
+      "expected": {
+        "state": "paid",
+        "method": "lightning",
+        "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245"
+      }
+    },
+    {
+      "name": "a member whose name holds U+0000: a name, still JSON",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "bodyText": "{\"status\":\"OK\",\"settled\":true,\"preimage\":\"f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245\",\"pr\":\"lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv\",\"\\u0000extra\":1}"
+      },
+      "expected": {
+        "state": "paid",
+        "method": "lightning",
+        "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245"
+      }
+    },
+    {
+      "name": "a member holding a lone surrogate: still JSON",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "bodyText": "{\"status\":\"OK\",\"settled\":true,\"preimage\":\"f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245\",\"pr\":\"lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv\",\"extra\":\"\\ud800\"}"
+      },
+      "expected": {
+        "state": "paid",
+        "method": "lightning",
+        "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245"
+      }
+    },
+    {
+      "name": "64 arrays and objects nested in all: still JSON",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "bodyText": "{\"status\":\"OK\",\"settled\":true,\"preimage\":\"f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245\",\"pr\":\"lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv\",\"extra\":[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[1]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]}"
+      },
+      "expected": {
+        "state": "paid",
+        "method": "lightning",
+        "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245"
+      }
+    },
+    {
+      "name": "65 arrays and objects nested in all: not JSON",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "bodyText": "{\"status\":\"OK\",\"settled\":true,\"preimage\":\"f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245\",\"pr\":\"lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv\",\"extra\":[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[1]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]}"
+      },
+      "expected": {
+        "error": "network"
+      }
+    },
+    {
+      "name": "a number with a leading zero: not JSON",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "bodyText": "{\"status\":\"OK\",\"settled\":true,\"preimage\":\"f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245\",\"pr\":\"lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv\",\"extra\":01}"
+      },
+      "expected": {
+        "error": "network"
+      }
+    },
+    {
+      "name": "a comma after the last member: not JSON",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "bodyText": "{\"status\":\"OK\",\"settled\":true,\"preimage\":\"f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245\",\"pr\":\"lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv\",}"
+      },
+      "expected": {
+        "error": "network"
+      }
+    },
+    {
+      "name": "a no-break space between members: not JSON",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "bodyText": "{\"status\":\"OK\",\"settled\":true,\"preimage\":\"f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245\",\"pr\":\"lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv\", \"extra\":1}"
+      },
+      "expected": {
+        "error": "network"
+      }
+    },
+    {
+      "name": "not settled, before the end of the grace period",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "body": {
+          "status": "OK",
+          "settled": false,
+          "preimage": null,
+          "pr": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv"
+        }
+      },
+      "expected": {
+        "state": "open",
+        "expiresAt": 1791379179,
+        "received": "0",
+        "rest": null
+      }
+    },
+    {
+      "name": "not settled, after it",
+      "now": 1791379299,
+      "http": {
+        "status": 200,
+        "body": {
+          "status": "OK",
+          "settled": false,
+          "preimage": null,
+          "pr": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv"
+        }
+      },
+      "expected": {
+        "state": "expired",
+        "received": "0"
+      }
+    },
+    {
+      "name": "Not found, before",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "body": {
+          "status": "ERROR",
+          "reason": "Not found"
+        }
+      },
+      "expected": {
+        "state": "open",
+        "expiresAt": 1791379179,
+        "received": "0",
+        "rest": null
+      }
+    },
+    {
+      "name": "Not found, after",
+      "now": 1791379299,
+      "http": {
+        "status": 200,
+        "body": {
+          "status": "ERROR",
+          "reason": "Not found"
+        }
+      },
+      "expected": {
+        "state": "expired",
+        "received": "0"
+      }
+    },
+    {
+      "name": "Not found with HTTP 404, after",
+      "now": 1791379299,
+      "http": {
+        "status": 404,
+        "body": {
+          "status": "ERROR",
+          "reason": "Not found"
+        }
+      },
+      "expected": {
+        "state": "expired",
+        "received": "0"
+      }
+    },
+    {
+      "name": "status in lower case, after",
+      "now": 1791379299,
+      "http": {
+        "status": 200,
+        "body": {
+          "status": "error",
+          "reason": "Not found"
+        }
+      },
+      "expected": {
+        "state": "expired",
+        "received": "0"
+      }
+    },
+    {
+      "name": "another refusal, before",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "body": {
+          "status": "ERROR",
+          "reason": "Internal server error"
+        }
+      },
+      "expected": {
+        "state": "open",
+        "expiresAt": 1791379179,
+        "received": "0",
+        "rest": null
+      }
+    },
+    {
+      "name": "another refusal, after",
+      "now": 1791379299,
+      "http": {
+        "status": 200,
+        "body": {
+          "status": "ERROR",
+          "reason": "Internal server error"
+        }
+      },
+      "expected": {
+        "error": "network"
+      }
+    },
+    {
+      "name": "about another invoice",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "body": {
+          "status": "OK",
+          "settled": true,
+          "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245",
+          "pr": "lnbc1p4vvsjspp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qusqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqx5s4r0"
+        }
+      },
+      "expected": {
+        "error": "invalid_invoice"
+      }
+    },
+    {
+      "name": "about no invoice",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "body": {
+          "status": "OK",
+          "settled": true,
+          "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245"
+        }
+      },
+      "expected": {
+        "error": "invalid_invoice"
+      }
+    },
+    {
+      "name": "a wrong preimage",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "body": {
+          "status": "OK",
+          "settled": true,
+          "preimage": "0000000000000000000000000000000000000000000000000000000000000000",
+          "pr": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv"
+        }
+      },
+      "expected": {
+        "error": "invalid_invoice"
+      }
+    },
+    {
+      "name": "a preimage that is not hex",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "body": {
+          "status": "OK",
+          "settled": true,
+          "preimage": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+          "pr": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv"
+        }
+      },
+      "expected": {
+        "error": "invalid_invoice"
+      }
+    },
+    {
+      "name": "settled as a string",
+      "now": 1791379299,
+      "http": {
+        "status": 200,
+        "body": {
+          "status": "OK",
+          "settled": "true",
+          "preimage": "f71fd193f4b67ce4841f0abeb22a55e298559dc0d922e9fbb1a58128d1b44245",
+          "pr": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv"
+        }
+      },
+      "expected": {
+        "state": "expired",
+        "received": "0"
+      }
+    },
+    {
+      "name": "HTTP 500",
+      "now": 1791379298,
+      "http": {
+        "status": 500,
+        "bodyText": "oops"
+      },
+      "expected": {
+        "error": "network"
+      }
+    },
+    {
+      "name": "HTTP 429 with a refusal",
+      "now": 1791379298,
+      "http": {
+        "status": 429,
+        "body": {
+          "status": "ERROR",
+          "reason": "Too many requests"
+        }
+      },
+      "expected": {
+        "error": "network"
+      }
+    },
+    {
+      "name": "HTTP 200, not JSON",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "bodyText": "<html>"
+      },
+      "expected": {
+        "error": "network"
+      }
+    },
+    {
+      "name": "HTTP 200, a JSON array",
+      "now": 1791379298,
+      "http": {
+        "status": 200,
+        "body": []
+      },
+      "expected": {
+        "error": "network"
+      }
+    },
+    {
+      "name": "HTTP 404, not an LNURL answer",
+      "now": 1791379299,
+      "http": {
+        "status": 404,
+        "bodyText": "Not found"
+      },
+      "expected": {
+        "error": "network"
+      }
+    }
+  ],
+  "stored": [
+    {
+      "name": "as createInvoice made it",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "verifyUrl": "https://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "onchainAddress": null,
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "valid": true
+      }
+    },
+    {
+      "name": "a DeclaredInvoice, as findInvoices gives it",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "verifyUrl": "https://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "onchainAddress": null,
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "21",
+        "fiat": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "declaredAt": 1791378281
+      },
+      "expected": {
+        "valid": true
+      }
+    },
+    {
+      "name": "without an onchainAddress member: Lightning only",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "verifyUrl": "https://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "valid": true
+      }
+    },
+    {
+      "name": "sats with a leading zero: a string of digits",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "verifyUrl": "https://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "onchainAddress": null,
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "021",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "valid": true
+      }
+    },
+    {
+      "name": "paid on-chain only, with its ref",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": null,
+        "paymentHash": null,
+        "verifyUrl": null,
+        "onchainAddress": "bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md",
+        "paymentUri": "bitcoin:bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md?amount=0.00000021",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "valid": true
+      }
+    },
+    {
+      "name": "with an address and its ref",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "verifyUrl": "https://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "onchainAddress": "bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md",
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "valid": true
+      }
+    },
+    {
+      "name": "without its bolt11 member",
+      "invoice": {
+        "ref": "ORD-1",
+        "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "verifyUrl": "https://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "onchainAddress": null,
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "without its paymentHash member",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "verifyUrl": "https://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "onchainAddress": null,
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "without its verifyUrl member",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "onchainAddress": null,
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "paid on-chain only, without its bolt11 member",
+      "invoice": {
+        "ref": "ORD-1",
+        "paymentHash": null,
+        "verifyUrl": null,
+        "onchainAddress": "bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md",
+        "paymentUri": "bitcoin:bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md?amount=0.00000021",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "paid on-chain only, without its paymentHash member",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": null,
+        "verifyUrl": null,
+        "onchainAddress": "bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md",
+        "paymentUri": "bitcoin:bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md?amount=0.00000021",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "paid on-chain only, without its verifyUrl member",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": null,
+        "paymentHash": null,
+        "onchainAddress": "bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md",
+        "paymentUri": "bitcoin:bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md?amount=0.00000021",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "bolt11 null with a payment hash",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": null,
+        "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "verifyUrl": null,
+        "onchainAddress": null,
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "neither an invoice nor an address",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": null,
+        "paymentHash": null,
+        "verifyUrl": null,
+        "onchainAddress": null,
+        "paymentUri": "bitcoin:bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md?amount=0.00000021",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "sats as a number",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "verifyUrl": "https://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "onchainAddress": null,
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": 21,
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "sats 0",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "verifyUrl": "https://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "onchainAddress": null,
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "0",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "sats that are not the invoice's",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "verifyUrl": "https://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "onchainAddress": null,
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "22",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "expiresAt that is not the invoice's",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "verifyUrl": "https://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "onchainAddress": null,
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379180,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "expiresAt as a string",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "verifyUrl": "https://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "onchainAddress": null,
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": "1791379179",
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "a verify URL in http",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "verifyUrl": "http://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "onchainAddress": null,
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "a payment hash that is not the invoice's",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "paymentHash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "verifyUrl": "https://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "onchainAddress": null,
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "an address that is not a deposit address",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": "lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "paymentHash": "d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "verifyUrl": "https://breez.tips/lnurlp/verify/d87214c9804af38c5248a3d7a9783d2a8b00d991789c67d4d22c81f382f72839",
+        "onchainAddress": "bc1qnotanaddress",
+        "paymentUri": "lightning:lnbc210n1p4vvsmgpp5mpepfjvqftecc5jg50t6j7pa929spkv30zwx04xj9jql8qhh9qussp5r7d725tw2vf7345mtmuuypcsav4sh2qp6663qxs2al3q8855qwxqxqzurnp4qvyndeaqzman7h898jxm98dzkm0mlrsx36s93smrur7h0azyyuxc5rzjqwghf7zxvfkxq5a6sr65g0gdkv768p83mhsnt0msszapamzx2qvuxqqqqrt49lmtcqqqqqqqqqqq86qq9qcqzpuhp5gs8l6ck7jdsa9qx8u2ydgl6q933mn2047j5nw9f9xeknle3ujltq9qyyssqsjvk6t43cmgncdn8z783r2gym2u80dh5xa2xmw2u0a9aykhww3z9tdj4m5kvxt6yme90c0g0gauf008hr70lx5jdkzfzn7hwa73axxsqy9rcwv",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "an address without its ref",
+      "invoice": {
+        "ref": null,
+        "bolt11": null,
+        "paymentHash": null,
+        "verifyUrl": null,
+        "onchainAddress": "bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md",
+        "paymentUri": "bitcoin:bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md?amount=0.00000021",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "an address without a ref member",
+      "invoice": {
+        "bolt11": null,
+        "paymentHash": null,
+        "verifyUrl": null,
+        "onchainAddress": "bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md",
+        "paymentUri": "bitcoin:bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md?amount=0.00000021",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "an address with a ref that is not a reference",
+      "invoice": {
+        "ref": "ORD 1",
+        "bolt11": null,
+        "paymentHash": null,
+        "verifyUrl": null,
+        "onchainAddress": "bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md",
+        "paymentUri": "bitcoin:bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md?amount=0.00000021",
+        "sats": "21",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "sats of 16 digits, the most",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": null,
+        "paymentHash": null,
+        "verifyUrl": null,
+        "onchainAddress": "bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md",
+        "paymentUri": "bitcoin:bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md?amount=21000000",
+        "sats": "2100000000000000",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "valid": true
+      }
+    },
+    {
+      "name": "sats above the most",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": null,
+        "paymentHash": null,
+        "verifyUrl": null,
+        "onchainAddress": "bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md",
+        "paymentUri": "bitcoin:bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md?amount=0.00000021",
+        "sats": "2100000000000001",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    },
+    {
+      "name": "sats of 17 digits, their value 21",
+      "invoice": {
+        "ref": "ORD-1",
+        "bolt11": null,
+        "paymentHash": null,
+        "verifyUrl": null,
+        "onchainAddress": "bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md",
+        "paymentUri": "bitcoin:bc1p24rdhyv86gmwras00wd98lfqm9q5dr4s3qgqdsu262kutfwwxl9slay6md?amount=0.00000021",
+        "sats": "00000000000000021",
+        "fiat": null,
+        "rate": null,
+        "note": "ORD-1",
+        "createdAt": 1791378280,
+        "expiresAt": 1791379179,
+        "checkoutUrl": null,
+        "redirectUrl": null
+      },
+      "expected": {
+        "error": "invalid_order",
+        "param": "invoice"
+      }
+    }
+  ]
+}

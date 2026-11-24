@@ -1,0 +1,6 @@
+{
+  "name": "empty",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Stands for the internal packages of Wix that @wix/wix-code-types names: its type declarations do not use them."
+}

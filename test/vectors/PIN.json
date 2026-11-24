@@ -1,0 +1,19 @@
+{
+  "repository": "https://github.com/sattleme/checkout-spec",
+  "commit": "1bd7966d0cff77c2538c00e8929b65f0796d9220",
+  "version": "1.0.0",
+  "files": {
+    "app.json": {
+      "from": "vectors/app/app.json",
+      "sha256": "0aa3a4c6911c1ca564aea4b6dc6180f3d0c15753440ea305b4214382c6426ac2"
+    },
+    "implementation-declaration.json": {
+      "from": "vectors/app/implementation-declaration.json",
+      "sha256": "f5840afcb9375b9829cb1d935da5ed7ffb988e4f252e3f35c8aff960a1622854"
+    },
+    "payments.json": {
+      "from": "vectors/payments.json",
+      "sha256": "9936cbd031fe677dac0967b77e2e4eb9cdb218639ffe73621f347e2ed8531169"
+    }
+  }
+}

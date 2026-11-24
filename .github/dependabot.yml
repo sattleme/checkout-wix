@@ -1,0 +1,48 @@
+version: 2
+# One grouped pull request per ecosystem and directory, for versions published 7 days ago or more
+# (cooldown). Nothing here changes what npm or the CI compute: the lockfiles are npm's own.
+updates:
+  # The SHA-pinned actions of .github/workflows/.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      github-actions:
+        patterns: ["*"]
+  # The build's and the tests' tools, pinned exactly. Not the SDK: it is the tarball in sdk/, taken
+  # from a commit of checkout-node (README, "Development"), and the packages it bundles are those
+  # its own package.json pins.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    versioning-strategy: increase
+    cooldown:
+      default-days: 7
+    ignore:
+      - dependency-name: "@sattleme/checkout"
+    groups:
+      npm:
+        patterns: ["*"]
+  # The type check's packages (tools/velo-types), in one pull request: Velo's declarations, the two
+  # packages of Wix's SDK, TypeScript. Not the two empty stand-ins of Wix's internal packages, nor
+  # TypeScript 7, which removed the module resolution Wix's settings for a site's backend set
+  # (tools/velo-types/tsconfig.json; README, "Development").
+  - package-ecosystem: npm
+    directory: /tools/velo-types
+    schedule:
+      interval: weekly
+    versioning-strategy: increase
+    cooldown:
+      default-days: 7
+    ignore:
+      - dependency-name: "@wix/editor-elements-semantic-classnames"
+      - dependency-name: "@wix/wix-code-common"
+      - dependency-name: "typescript"
+        versions: [">= 7"]
+    groups:
+      velo-types:
+        patterns: ["*"]

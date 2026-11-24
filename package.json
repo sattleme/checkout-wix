@@ -1,0 +1,35 @@
+{
+  "name": "checkout-wix",
+  "version": "1.0.0",
+  "private": true,
+  "description": "sattle.me Checkout for Wix sites (Velo): a payment provider for Bitcoin, in Lightning and on-chain, paid straight to the merchant's sattle.me wallet. Not an npm package: its files go into a Wix site.",
+  "license": "MIT",
+  "author": "sattle.me (https://sattle.me)",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:check": "node scripts/build.mjs --check",
+    "syntax": "node scripts/check-syntax.mjs",
+    "test": "node scripts/test.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "archive": "node scripts/archive.mjs",
+    "archive:check": "node scripts/archive.mjs --check",
+    "check": "npm run sdk:check && npm run format:check && npm run build && npm run build:check && npm run syntax && npm test && npm run archive && npm run archive:check",
+    "sdk:check": "node scripts/sdk.mjs check",
+    "types": "npm --prefix tools/velo-types run check"
+  },
+  "dependencies": {
+    "@sattleme/checkout": "file:sdk/sattleme-checkout-1.0.0.tgz",
+    "uqr": "0.1.3"
+  },
+  "devDependencies": {
+    "acorn": "8.19.0",
+    "esbuild": "0.28.2",
+    "jsqr": "1.4.0",
+    "prettier": "3.10.1"
+  }
+}

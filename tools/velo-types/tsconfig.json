@@ -1,0 +1,44 @@
+// The plugin's modules as built (dist/plugin-modules, from `npm run build`; a release merges them
+// into one file, which Wix does not type-check: its banner turns that off), checked against
+// Velo's type declarations: those Wix publishes for its code editor (@wix/wix-code-types), with
+// that package's settings for a site's backend (ES2020, Node 18's types, JavaScript checked), and
+// the two packages of Wix's SDK that the merchant installs (@wix/ecom, @wix/essentials). Stricter
+// than Wix's settings: every flag of `strict` but noImplicitAny (the plugin is JavaScript, its
+// parameters untyped) and useUnknownInCatchVariables (its catch blocks read an error's `code`);
+// unused names and labels, unreachable code, missing returns, switch fallthrough and optional
+// properties set to undefined are errors too. Wix's own declarations are not checked
+// (skipLibCheck): some do not compile on their own ($w.d.ts, @wix/essentials' index.d.ts).
+// TypeScript 6: Wix's settings set moduleResolution "node" (node10), which TypeScript 6 deprecates
+// (ignoreDeprecations) and TypeScript 7 removed, so the check stays on 6; TypeScript 6 turns
+// strict on by default, so the two flags left off are set off here.
+{
+  "extends": "./node_modules/@wix/wix-code-types/configs/tsconfig.backend.json",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "ignoreDeprecations": "6.0",
+    "noImplicitAny": false,
+    "useUnknownInCatchVariables": false,
+    "paths": {
+      "@wix/ecom": ["./node_modules/@wix/ecom"],
+      "@wix/essentials": ["./node_modules/@wix/essentials"]
+    },
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "strictBuiltinIteratorReturn": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["../../dist/plugin-modules/backend/**/*.js"]
+}

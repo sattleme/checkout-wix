@@ -1,0 +1,144 @@
+name: CI
+
+# Every pull request and every push to main, and a release (release.yml) before it is made: the
+# pinned SDK, the format, the plugin's build (twice: reproducible; its modules, and the release's
+# one file), its ES2020 syntax and imports, its tests (fakes of the Wix modules and of the SDK, the
+# SDK's real bundle against fakes: no network; on the modules, then on the release's one file) on
+# every Node the tools support, then on Node 18.17.1, the one a Wix site's backend ran
+# when measured (Wix documents none), and on Node 20; its type check against Velo's types; the
+# release archive, checked, the tests run again on the files it holds, and kept as an artifact.
+#
+# Time limits: only to free a runner from a stuck job, with a wide margin.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  checks:
+    name: Checks (Node ${{ matrix.node }})
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        # package.json "engines": Node 22 or later, for the build and the tests: every release line
+        # Node.js supports.
+        node: ["22", "24", "26"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # No npm cache: a few packages, which `npm ci` installs in seconds.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+          package-manager-cache: false
+      - run: npm ci --ignore-scripts
+      - run: npm ls --all
+      - run: npm run sdk:check
+      - run: npm run format:check
+      - run: npm run build
+      - run: npm run build:check
+      - run: npm run syntax
+      - run: node scripts/bundle-compat.cjs dist/plugin-modules/backend/sattleme-checkout/checkout-sdk.js
+      - run: npm test
+
+  wix-node:
+    name: Tests on Node 18.17.1 (a Wix site's backend) and Node 20
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # Installed and built with the Node of .nvmrc (the tools need 22), then tested on the Node a
+      # Wix site's backend ran when measured (18.17.1; the status page shows a site's), and on
+      # Node 20.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "18.17.1"
+          package-manager-cache: false
+      - run: node --version
+      - run: node scripts/bundle-compat.cjs dist/plugin-modules/backend/sattleme-checkout/checkout-sdk.js
+      - run: node scripts/test.mjs
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "20"
+          package-manager-cache: false
+      - run: node --version
+      - run: node scripts/bundle-compat.cjs dist/plugin-modules/backend/sattleme-checkout/checkout-sdk.js
+      - run: node scripts/test.mjs
+
+  types:
+    name: Type check against Velo's types
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      # Velo's declarations, the two packages of Wix's SDK and TypeScript, from their own lockfile.
+      - run: npm ci --ignore-scripts --prefix tools/velo-types
+      - run: npm run types
+
+  package:
+    name: Release archive
+    needs: [checks, wix-node, types]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - run: npm run archive
+      - run: npm run archive:check
+      # What the archive holds, in place of the build: the same files as a second build, and the
+      # tests pass on them.
+      - name: The tests, on the files the archive holds
+        run: |
+          rm -rf dist/plugin-site
+          node scripts/archive.mjs --extract dist/plugin-site
+          npm run build:check
+          npm test
+      - name: The archive's SHA-256 and its files', in the summary
+        run: |
+          {
+            echo '```'
+            (cd dist && sha256sum checkout-wix-*.zip)
+            echo
+            cat dist/plugin-site/SHA256SUMS
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: checkout-wix
+          path: dist/checkout-wix-*.zip
+          if-no-files-found: error
+          retention-days: 30

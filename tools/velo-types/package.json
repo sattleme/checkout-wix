@@ -1,0 +1,22 @@
+{
+  "name": "checkout-wix-velo-types",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The plugin's type check: its built files against Velo's type declarations, with Wix's settings for a site's backend (tsconfig.json). The two internal packages of Wix that @wix/wix-code-types names, which the public registry does not have and its declarations do not use, are replaced by an empty local one (empty/).",
+  "license": "MIT",
+  "scripts": {
+    "check": "tsc -p ."
+  },
+  "devDependencies": {
+    "@wix/ecom": "1.0.2677",
+    "@wix/editor-elements-semantic-classnames": "file:./empty",
+    "@wix/essentials": "1.0.15",
+    "@wix/wix-code-common": "file:./empty",
+    "@wix/wix-code-types": "2.0.14812",
+    "typescript": "6.0.3"
+  },
+  "overrides": {
+    "@wix/editor-elements-semantic-classnames": "$@wix/editor-elements-semantic-classnames",
+    "@wix/wix-code-common": "$@wix/wix-code-common"
+  }
+}
