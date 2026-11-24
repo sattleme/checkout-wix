@@ -15,8 +15,8 @@ Wix development site on 23 November 2026 (classic editor with Velo, Node v18.17.
 sources merged into one file rather than the release's files; what it showed was fixed since
 (README, [What was measured on Wix](../README.md#what-was-measured-on-wix), which lists what
 remains to measure). Run it in full with the release's files before the release is published.
-Use the release's archive, or `dist/plugin-site/` of the commit to release, and note its version
-and the archive's SHA-256. What Wix does, as measured on
+Use the six files of the CI's archive (the `checkout-wix` artifact of its run on the commit to
+release), or `dist/plugin-site/` of that commit, and note its version and the files' SHA-256s. What Wix does, as measured on
 a Wix development site in October 2026 (README,
 [Payments and orders](../README.md#payments-and-orders)): an order that is not paid has number 0
 and is not in **Orders** (open it by its direct link); Wix shows its own messages to the customer
@@ -24,8 +24,8 @@ and the merchant, not the plugin's (the status page and the site's logs give the
 
 ## Setup
 
-1. A Wix site on a plan that takes payments, Velo on. Install the plugin from the release's
-   archive (or `dist/plugin-site/`) as the README says
+1. A Wix site on a plan that takes payments, Velo on. Install the plugin from those six files
+   (or `dist/plugin-site/`) as the README says
    ([Installation](../README.md#installation)): its six files, `backend/sattleme-plugin.js` (the
    whole plugin, about 645 KB: note whether the code panel takes it in one paste, and how long it
    takes), the payment provider's two, `http-functions.js`, `events.js` and `jobs.config`, with the

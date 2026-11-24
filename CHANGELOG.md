@@ -69,4 +69,5 @@ label; notes after an erasure without what it removed; the status token's hint.
   SDK pinned in `sdk/` as the tarball of a commit; a release archive, checked; a type check
   against Velo's types; tests at three levels on Node 18.17.1, 20, 22, 24 and 26, on the plugin's
   modules and on the release's one file; a release workflow that makes a draft GitHub release of
-  a tag.
+  a tag, with the six files of that archive, each as its own asset, and each one's place in the
+  site and SHA-256 in its notes.
