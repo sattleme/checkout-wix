@@ -8,7 +8,7 @@
     "check": "tsc -p ."
   },
   "devDependencies": {
-    "@wix/ecom": "1.0.2677",
+    "@wix/ecom": "1.0.2685",
     "@wix/editor-elements-semantic-classnames": "file:./empty",
     "@wix/essentials": "1.0.15",
     "@wix/wix-code-common": "file:./empty",
