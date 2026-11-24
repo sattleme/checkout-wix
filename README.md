@@ -96,10 +96,11 @@ customer on the shop's address, and has their browser contact no one else ([Priv
 
 ## Installation
 
-The files to put into the site are those of a release, `checkout-wix-<version>.zip` (its folder
-`checkout-wix-<version>/`): a GitHub release of this repository, which the merchant's sattle.me app
-offers to download. Or those of `dist/plugin-site/` after `npm run build`. Six files, all in
-`backend/`, as listed in its `SHA256SUMS`:
+The files to put into the site are those of a release: a GitHub release of this repository, which
+the merchant's sattle.me app offers to download, has them as its six files, each under its own
+name, and its notes give each one's place in the site and its SHA-256 (GitHub shows each file's
+SHA-256 beside it too). Or those of `dist/plugin-site/` after `npm run build`, as listed in its
+`SHA256SUMS`. Six files, all in `backend/`:
 
 | File (`backend/`)                                                              | What it is                                                                                   |
 | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
@@ -121,7 +122,7 @@ its content pasted.
 
 > **Before each paste, check which file is open** (its tab's name, and where it is in the Code
 > sidebar): Wix's panel shows the files side by side, and a paste once went into the wrong one
-> (measured). **Before publishing, check each file's SHA-256** against `SHA256SUMS`: copy the
+> (measured). **Before publishing, check each file's SHA-256** against the release's notes: copy the
 > file's text from the code panel into a file on your computer, then `sha256sum <file>` (on a
 > Mac, `shasum -a 256 <file>`); do it again after reloading the editor, which once typed stray
 > keystrokes at the top of three files (measured). Paste again any file whose SHA-256 differs.
@@ -155,7 +156,7 @@ its content pasted.
    `post_sattlemeCheckoutStatus`); to `events.js`, its import and its two functions
    (`wixCrm_onContactDeleted`, `wixCrm_onContactMerged`: [Privacy](#privacy), "Removing personal
    data"); to `jobs.config`, its job (one, hourly, at minute 17) in the list `jobs`.
-6. **Check each file's SHA-256** against `SHA256SUMS` (above), then **publish** the site, once:
+6. **Check each file's SHA-256** against the release's notes (above), then **publish** the site, once:
    Wix's **Publish** button gives no confirmation, and each click makes one publication
    (measured: the site's history, in the editor's Site menu, lists one per click).
 7. **The status page.** Open `https://<your site>/_functions/sattlemeCheckoutStatus` and enter the
@@ -1044,7 +1045,8 @@ npm run types   # the built modules against Velo's types (after npm run build)
 - **The archive** of a release (`npm run archive`): `dist/checkout-wix-<version>.zip`, the built
   files and CHANGELOG.md, LICENSE and README.md, the same bytes from the same files;
   `npm run archive:check` reads it back, and `node scripts/archive.mjs --extract <dir>` gives its
-  files back, for the tests to run on them.
+  files back, for the tests to run on them. It carries the files from the CI to the release, which
+  gets its six site files, each as its own asset (not the archive).
 - **The pinned SDK.** `node scripts/sdk.mjs check` (in `npm run check`, and a test) checks `sdk/`
   file for file against `PIN.json`, and that the lockfile installs it. To take another version,
   clone sattleme/checkout-node, check out its commit, then `node scripts/sdk.mjs import <clone>`:
@@ -1072,8 +1074,9 @@ Releases are the maintainers' only. First run the procedure of
 tag `v<version>` on that commit of `main`;
 [`release.yml`](.github/workflows/release.yml) runs the CI again, checks the tag (its form, the
 version in those three files, a commit of `main`), and, once a maintainer approves it in the
-`release` environment, makes a **draft** GitHub release of the tag with the archive and the
-CHANGELOG's section. A maintainer checks it and publishes it.
+`release` environment, makes a **draft** GitHub release of the tag with the six site files of the
+archive the CI built and checked, each as its own asset, and notes made of the CHANGELOG's section
+and of each file's place in the site and SHA-256. A maintainer checks it and publishes it.
 
 There is no marketplace to submit to: Wix's App Market does not take a Velo payment provider
 ("You can't publish the plugin you create on the Wix App Market"). The published release is where
